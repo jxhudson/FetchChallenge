@@ -31,7 +31,7 @@ app.post('/receipts/process', (req, res) => {
       total,
       items,
       id: uuid(),
-      points: points(),
+      rewardPoints: points(newReceipt),
     };
 
     // Convert the data to a string so we can save it
@@ -56,10 +56,6 @@ app.post('/receipts/process', (req, res) => {
   } else {
     res.status(500).json('Error in posting receipt');
   }
-});
-
-app.get('/receipts/id/points', (req, res) => {
-
 });
 
 app.listen(PORT, () =>
