@@ -58,15 +58,16 @@ app.post('/receipts/process', (req, res) => {
 });
 
 app.get('/receipts/:id/points', (req, res) => {
-  let newReceipt;
+  let Receipt;
   
-  fs.readFile('./receipts/${req.id}.json', 'utf8', (err, data) => {
-  console.log(data);
-    newReceipt = JSON.parse(data);
-  });
+  let data = fs.readFileSync(path.resolve(__dirname, `./receipts/${req.params.id}.json`));
+    console.log(data);
+    Receipt = JSON.parse(data);
+  
   
   // Then you will send it to the points calculator.
-  points(newReceipt)
+  let rewardsPoints = points(Receipt);
+  res.status(201).json(rewardsPoints);
 });
 
 app.listen(PORT, () =>
