@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 // Helper method for generating unique ids
 const uuid = require('./helpers/uuid');
+const points = require('./helpers/points');
 
 const PORT = 3001;
 
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// POST request to add a review
+// POST request to add a receipt
 app.post('/receipts/process', (req, res) => {
   // Log that a POST request was received
   console.info(`${req.method} request received`);
@@ -30,13 +31,14 @@ app.post('/receipts/process', (req, res) => {
       total,
       items,
       id: uuid(),
+      points: points(),
     };
 
     // Convert the data to a string so we can save it
     const receiptString = JSON.stringify(newReceipt);
 
     // Write the string to a file
-    fs.writeFile(`./db/${newReceipt.id}.json`, receiptString, (err) =>
+    fs.writeFile(`./receipts/${newReceipt.id}.json`, receiptString, (err) =>
       err
         ? console.error(err)
         : console.log(
@@ -54,6 +56,10 @@ app.post('/receipts/process', (req, res) => {
   } else {
     res.status(500).json('Error in posting receipt');
   }
+});
+
+app.get('/receipts/id/points', (req, res) => {
+
 });
 
 app.listen(PORT, () =>
