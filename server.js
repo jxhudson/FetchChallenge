@@ -60,7 +60,7 @@ app.post('/receipts/process', (req, res) => {
 app.get('/receipts/:id/points', (req, res) => {
   let newReceipt;
   
-  fs.readFile('./receipts/${req.id}.json', 'utf8', (err, data) => {
+  fs.readFile('./receipts/${req.params.id}.json', 'utf8', (err, data) => {
   console.log(data);
     newReceipt = JSON.parse(data);
   });
