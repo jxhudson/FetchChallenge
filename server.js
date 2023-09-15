@@ -31,8 +31,7 @@ app.post('/receipts/process', (req, res) => {
       total,
       items,
       id: uuid(),
-      rewardPoints: points(newReceipt),
-    };
+    }
 
     // Convert the data to a string so we can save it
     const receiptString = JSON.stringify(newReceipt);
@@ -56,6 +55,18 @@ app.post('/receipts/process', (req, res) => {
   } else {
     res.status(500).json('Error in posting receipt');
   }
+});
+
+app.get('/receipts/:id/points', (req, res) => {
+  let newReceipt;
+  
+  fs.readFile('./receipts/${req.id}.json', 'utf8', (err, data) => {
+  console.log(data);
+    newReceipt = JSON.parse(data);
+  });
+  
+  // Then you will send it to the points calculator.
+  points(newReceipt)
 });
 
 app.listen(PORT, () =>
