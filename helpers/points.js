@@ -3,7 +3,7 @@ module.exports = (Receipt) => {
 
   // Rule 1:
   var X = Receipt.retailer;
-  points += X.replace(/[^a-zA-Z0-9]/gi, "").length;
+  points += X.replace(/[^a-zA-Z0-9]/g, "").length;
 
   // Rule 2:
   if (Receipt.total % 1 === 0) {
@@ -19,27 +19,27 @@ module.exports = (Receipt) => {
   points += Math.floor(Receipt.items.length / 2) * 5;
 
   // Rule 5
-  var tempitems = Receipt.items;
-  for (i = 0; i < tempitems.length; i++) {
-    var item1 = tempitems[0];
-    z = item1.shortDescription.trim();
-    a = z.length;
-    if (a % 3 === 0) {
-      points += Math.ceil(item1.price * 0.2);
+  Receipt.items.forEach((items) => {
+    var shortDescriptionTrim = items.shortDescription.trim().length;
+    if (shortDescriptionTrim % 3 === 0) {
+        points += Math.ceil(items.price * .2);
     }
-  }
+})
 
   // Rule 6
-  var dayPurchased = new Date(Receipt.purchaseDate);
-  if (dayPurchased.getDate() % 2 !== 0) {
+  var dayPurchased = new Date(Receipt.purchaseDate).getDay();
+  if (dayPurchased % 2 === 1) {
     points += 6;
   }
 
   // Rule 7
-  var timePurchased = Receipt.purchaseTime;
-  if (timePurchased > 14 && timePurchased < 16) {
+var purchaseTimeSplit = Receipt.purchaseTime.split(":");
+var purchaseMinute = parseInt(purchaseTimeSplit[1], 10);
+var purchaseHour = parseInt(purchaseTimeSplit[0], 10);
+
+if (purchaseHour > 14 || purchaseHour === 14 && purchaseMinute > 0 && purchaseHour < 16) {
     points += 10;
-  }
+}
 
   return points;
 };
