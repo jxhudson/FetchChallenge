@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 // Helper method for generating unique ids
 const uuid = require('./helpers/uuid');
-const points = require('./helpers/points');
+const points = require('./helpers/points').default;
 
 const PORT = 3001;
 
