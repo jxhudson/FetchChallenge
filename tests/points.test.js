@@ -1,0 +1,1 @@
+const points = require('../points.js');
